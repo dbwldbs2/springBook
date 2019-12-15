@@ -8,16 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
+@Slf4j
 public class SampleTests {
-	@Autowired
+	//private static Logger logger = LoggerFactory.getLogger(SampleTests.class);
+	@Autowired 
 	private Restaurant restaurant;
 	
 	@Test
 	public void testExist() {
 		assertNotNull(restaurant);
+		log.info("---------------------");
+		log.info("welcome");
 	}
 	
-	
 }
+
