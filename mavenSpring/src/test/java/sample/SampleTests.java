@@ -21,8 +21,7 @@ public class SampleTests {
 	@Test
 	public void testExist() {
 		assertNotNull(restaurant);
-		log.info("---------------------");
-		log.info("welcome");
+		log.info("Test :: {}", restaurant.getChef());
 	}
 	
 }
