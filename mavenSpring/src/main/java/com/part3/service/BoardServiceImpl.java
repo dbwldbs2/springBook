@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.part3.domain.BoardVO;
+import com.part3.domain.Criteria;
 import com.part3.mapper.BoardMapper;
 
 import lombok.AllArgsConstructor;
@@ -22,14 +23,15 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public void register(BoardVO board) {
 		// TODO Auto-generated method stub
-		log.info("register..."+ board);
 		
+		log.info("register..."+ board);
 		mapper.insertSelectKey(board);
 	}
 
 	@Override
 	public BoardVO get(Long bno) {
 		// TODO Auto-generated method stub
+		
 		log.info("get..." + bno);
 		return mapper.read(bno);
 	}
@@ -37,16 +39,16 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public boolean modify(BoardVO board) {
 		// TODO Auto-generated method stub
-		log.info("modify..." + board);
 		
+		log.info("modify..." + board);
 		return mapper.update(board) == 1;
 	}
 
 	@Override
 	public boolean remove(Long bno) {
 		// TODO Auto-generated method stub
-		log.info("remove..." + bno);
 		
+		log.info("remove..." + bno);
 		return mapper.delete(bno) == 1;
 	}
 
@@ -57,4 +59,22 @@ public class BoardServiceImpl implements BoardService{
 		log.info("getList...");
 		return mapper.getList();
 	}
+
+	@Override
+	public List<BoardVO> getList(Criteria cri) {
+		// TODO Auto-generated method stub
+		
+		log.info("get List with criteria: " + cri);
+		return mapper.getListWithPaging(cri);
+	}
+
+	@Override
+	public int getTotal(Criteria cri) {
+		// TODO Auto-generated method stub
+		
+		log.info("get total count");
+		return mapper.getTotalCount(cri);
+	}
+	
+	
 }

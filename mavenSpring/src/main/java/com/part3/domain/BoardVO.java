@@ -4,12 +4,12 @@ import java.util.Date;
 
 import lombok.Data;
 
-@Data
+@Data //getter(), setter(), toString()생성
 public class BoardVO {
-	private Long bno;
-	private String title;
-	private String content;
-	private String writer;
-	private Date regdate;
-	private Date updateDate;
+	private Long bno; //키값
+	private String title; //제목
+	private String content; //내용
+	private String writer; //작성자
+	private Date regdate; //등록일자
+	private Date updateDate; //수정일자
 }

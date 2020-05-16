@@ -1,5 +1,7 @@
 package com.part3.mapper;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.part3.domain.BoardVO;
+import com.part3.domain.Criteria;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,14 +34,14 @@ public class BoardMapperTests {
 		
 		mapper.insertSelectKey(board);
 		
-		log.info("{}", board);
+		//log.info("{}", board);
 	}
 	
 	@Test
 	public void testRead() {
 		BoardVO board = mapper.read(9L);
 		 
-		log.info("9번째 정보 :: {}", board);
+		//log.info("9번째 정보 :: {}", board);
 	}
 	
 	@Test
@@ -55,7 +58,26 @@ public class BoardMapperTests {
 		board.setWriter("user00");
 		
 		int count = mapper.update(board);
-		log.info("UPDATE COUNT :: {}", count);
+		//log.info("UPDATE COUNT :: {}", count);
 	}
 	
+	@Test
+	public void testPaging() {
+		Criteria cri = new Criteria();
+		cri.setPageNum(3);
+		cri.setAmount(10);
+		
+		List<BoardVO> list = mapper.getListWithPaging(cri);
+		list.forEach(board -> log.info("board :: {}", board.getBno()));
+	}
+	
+	@Test
+	public void testSearch() {
+		Criteria cri = new Criteria();
+		cri.setKeyword("테스트");
+		cri.setType("TC");
+		
+		List<BoardVO> list = mapper.getListWithPaging(cri);
+		list.forEach(board -> log.info("search :: {}", board));
+	}
 }

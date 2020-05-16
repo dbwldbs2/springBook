@@ -4,28 +4,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 
-<script type="text/javascript">
-	$(document).ready(function() {
-		var formObj = $("form");
-		
-		$("button").on("clock", function(e) {
-			e.preventDefault();
-			
-			var operation = $(this).data("oper");
-			
-			console.log("jquery :: " + operation);
-			
-			if(operation === 'remove') {
-				formObj.attr("action", "/board/remove");
-			} else if(operation === 'list') {
-				formObj.attr("action", "/board/list").attr("method", "get");
-				formObj.empty();
-			}
-			
-			formObj.submit();
-		});
-	});
-</script>
+
+<link rel="stylesheet" href="/webjars/bootstrap/4.4.1/css/bootstrap.min.css">
 
 <div class="row">
 	<div class="col-lg-12">
@@ -66,6 +46,11 @@
 						<label>Update Date</label> <input class="form-control" name="regDate" value='<fmt:formatDate pattern ="yyyy/MM/dd" value ="${board.updateDate}" />' readonly="readonly">
 					</div>
 					
+					<input type="hidden" name="pageNum" value="<c:out value='${cri.pageNum}' />" >
+					<input type="hidden" name="amount" value="<c:out value='${cri.amount}' />" >
+					<input type="hidden" name="type" value="<c:out value='${cri.type}' />" >
+					<input type="hidden" name="keyword" value="<c:out value='${cri.keyword}' />" >
+					
 					<button type ="submit" date-oper="modify" class="btn btn-default">Modify</button>
 					<button type ="submit" date-oper="remove" class="btn btn-danger">Remove</button>
 					<button type ="submit" date-oper="list" class="btn btn-info">List</button>
@@ -78,3 +63,36 @@
 	<!-- end col-log-12 -->
 </div>
 <!-- end row -->
+
+<script src="/webjars/jquery/3.1.1-1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		var formObj = $("form");
+		
+		$("button").on("click", function(e) {
+			e.preventDefault();
+			
+			var operation = $(this).data("oper");
+			
+			console.log("jquery :: " + operation);
+			
+			if(operation === 'remove') {
+				formObj.attr("action", "/board/remove");
+			} else if(operation === 'list') {
+				formObj.attr("action", "/board/list").attr("method", "get");
+				var pageNumTag = $("input[name='pageNum']").clone();
+				var amountTag = $("input[name='amount']").clone();
+				var typeTag = $("input[name='type']").clone();
+				var keywordTag = $("input[name='keyword']").clone();
+								
+				formObj.empty();
+				formObj.append(pageNumTag);
+				formObj.append(amountTag);
+				formObj.append(typeTag);
+				formObj.append(keywordTag);
+			}
+			formObj.submit();
+		});
+	});
+</script>

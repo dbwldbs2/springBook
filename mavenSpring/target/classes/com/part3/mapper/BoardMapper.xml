@@ -57,4 +57,63 @@
 		WHERE bno = #{bno}
 	</update>
 	
+	<sql id = "criteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+	 		<foreach item="type" collection="typeArr">
+	 			<trim prefix="OR">
+	 				<choose>
+	 					<when test="type == 'T'.toString()">
+	 						title like '%'||#{keyword}||'%'
+	 					</when>
+	 					<when test="type == 'C'.toString()">
+	 						content like '%'||#{keyword}||'%'
+	 					</when>
+	 					<when test="type == 'W'.toString()">
+	 						writer like '%'||#{keyword}||'%'
+	 					</when>
+	 				</choose>
+	 			</trim>
+	 		</foreach>
+	 	</trim>
+	</sql>
+	
+	
+	<select id="getListWithPaging" resultType="com.part3.domain.BoardVO">
+		
+		SELECT 	bno
+				, title
+				, content
+				, writer
+				, regdate
+				, updatedate
+		FROM 	(
+			 	SELECT 	/*+INDEX_DESC(TBL_BOARD PK_BOARD)*/
+			 			rownum rn
+			 			, bno
+			 			, title
+			 			, content
+			 			, writer
+			 			, regdate
+			 			, updatedate
+			 	FROM 	TBL_BOARD
+			 	WHERE 	
+			 	
+			 	<include refid="criteria"/>
+			 	
+			 	rownum <![CDATA[<=]]> #{pageNum} * #{amount}
+		)
+		WHERE rn <![CDATA[>]]> (#{pageNum} -1) * #{amount}
+		
+	</select>
+	
+	<select id="getTotalCount" resultType="int">
+		SELECT 	COUNT(*)
+		FROM 	TBL_BOARD
+		WHERE
+		
+		<include refid="criteria"></include> 	
+		
+		bno <![CDATA[>]]> 0
+	</select>
+	
 </mapper>

@@ -9,7 +9,7 @@
 
 	
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+		<property name="driverClassName" value="oracle.jdbc.OracleDriver"></property>
 		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl"></property>
 		<property name="username" value="book_ex"></property>
 		<property name="password" value="book_ex"></property>
@@ -27,8 +27,10 @@
 	
 	<context:component-scan base-package="sample"/>
 	<context:component-scan base-package="com.part3.service"/>
+	<context:component-scan base-package="com.part4.service"/>
 	
 	<mybatis-spring:scan base-package="JDBCTest"/>
 	<mybatis-spring:scan base-package="com.part3.mapper"/>
+	<mybatis-spring:scan base-package="com.part4.mapper"/>
 	
 </beans>
