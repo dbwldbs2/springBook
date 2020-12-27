@@ -2,11 +2,13 @@ package com.part3.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.part3.domain.BoardVO;
 import com.part3.domain.Criteria;
 
 public interface BoardMapper {
-	//@Select("SELECT * FROM TBL_BOARD WHERE BNO > 0")
+	
 	public List<BoardVO> getList();
 	
 	public void insert(BoardVO board);
@@ -22,4 +24,6 @@ public interface BoardMapper {
 	public List<BoardVO> getListWithPaging(Criteria cri);
 	
 	public int getTotalCount(Criteria cri);
+	
+	public void updateReplyCnt(@Param("bno") long bno, @Param("amount") int amount);
 }

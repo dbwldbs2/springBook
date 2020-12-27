@@ -86,6 +86,7 @@
 				, writer
 				, regdate
 				, updatedate
+				, replycnt
 		FROM 	(
 			 	SELECT 	/*+INDEX_DESC(TBL_BOARD PK_BOARD)*/
 			 			rownum rn
@@ -95,6 +96,7 @@
 			 			, writer
 			 			, regdate
 			 			, updatedate
+			 			, replycnt
 			 	FROM 	TBL_BOARD
 			 	WHERE 	
 			 	
@@ -115,5 +117,11 @@
 		
 		bno <![CDATA[>]]> 0
 	</select>
+	
+	<select id="updateReplyCnt">
+		update tbl_board set replycnt = replycnt + #{amount} where bno = #{bno}
+	</select>
+	
+	
 	
 </mapper>

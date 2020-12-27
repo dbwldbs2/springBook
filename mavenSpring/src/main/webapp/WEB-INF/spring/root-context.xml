@@ -3,19 +3,26 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
 	
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<property name="driverClassName" value="oracle.jdbc.OracleDriver"></property>
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl"></property>
-		<property name="username" value="book_ex"></property>
-		<property name="password" value="book_ex"></property>
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@springbook.c6jf0rusmckm.ap-northeast-2.rds.amazonaws.com:1521:DATABASE"></property>
+		<property name="username" value="springbook"></property>
+		<property name="password" value="springbook"></property>
+<!-- 		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl"></property> -->
+<!-- 		<property name="username" value="book_ex"></property> -->
+<!-- 		<property name="password" value="book_ex"></property> -->
 	</bean>
 	
-	<!-- Database ConnectionPool 설정, Hikari를 이용한 -->
+	<!-- Hikari를 이용한  Database ConnectionPool 설정-->
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
 		<constructor-arg ref="hikariConfig" />
 	</bean>
@@ -24,13 +31,18 @@
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 	
-	
+	<tx:annotation-driven />
+		
 	<context:component-scan base-package="sample"/>
 	<context:component-scan base-package="com.part3.service"/>
 	<context:component-scan base-package="com.part4.service"/>
+	<context:component-scan base-package="com.part5.service"/>
+	<context:component-scan base-package="com.part5.aop"/>
 	
 	<mybatis-spring:scan base-package="JDBCTest"/>
 	<mybatis-spring:scan base-package="com.part3.mapper"/>
 	<mybatis-spring:scan base-package="com.part4.mapper"/>
+	<mybatis-spring:scan base-package="com.part5.mapper"/>
 	
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
 </beans>

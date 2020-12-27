@@ -25,12 +25,12 @@
 				</div>
 				<div class="form-group">
 					<label>Replyer</label>
-					<input class="form-control" name='reply' value='replyer'>
+					<input class="form-control" name='replyer' value='replyer'>
 				</div>
-				<div class="form-group">
-					<label>Date</label>
-					<input class="form-control" name='reply' value=''>
-				</div>
+<!-- 				<div class="form-group"> -->
+<!-- 					<label>Date</label> -->
+<!-- 					<input class="form-control" name='reply' value=''> -->
+<!-- 				</div> -->
 			</div>
 			<div class="modal-footer">
 				<button id='modalModBtn' type="button" class="btn btn-warning">Modify</button>
@@ -43,51 +43,6 @@
 </div> <!-- /.modal -->
 
 <script type="text/javascript" src="/resources/js/reply.js"></script>
-
-<script>
-	console.log("===============");
-	console.log("JS TEST");
-				   
-	var bnoValue = '<c:out value="${board.bno}" />';
-	replyService.add(
-		{reply:"JS TEST", replyer:"tester", bno:bnoValue}
-		, function(result) {
-			//alert("RESULT :: " + result);
-		}
-	);
-	
-	replyService.getList({bno:bnoValue, page:1}, function(list) {
-		for(var i =0, len = list.length||0; i< len; i++) {
-			console.log(list[i]);
-		}
-	});
-	
-	replyService.get(10, function(data) {
-		console.log(data)
-	});
-	/*
-	replyService.remove(23, function(count) {
-		console.log(count);
-		
-		if(count === "success") {
-			alert("REMOVED");
-		}
-	}, function(err) {
-		alert("ERROR!...");
-	});
-	*/
-	
-	
-	replyService.update({
-		rno : 22,
-		bno : bnoValue,
-		reply : "Modified Reply..."
-	}, function(result) {
-		alert("수정 완료...");
-	});
-</script>
-
-
 <script type="text/javascript">
 	$(document).ready(function() {
 		var operForm = $("#operForm");
@@ -102,15 +57,15 @@
 			operForm.submit();
 		});
 		
-		
-		
 		var bnoValue = '<c:out value="${board.bno}"/>';
 		var replyUL = $(".chat");
+		var pageNum = 1;
+		var replyPageFooter = $(".panel-footer");
 		
 		showList(1);
 		
 		function showList(page) {
-			repluService.getList({bno:bnoValue, page:page || 1}, function(replyCnt, list) {
+			replyService.getList({bno:bnoValue, page:page || 1}, function(replyCnt, list) {
 				
 				if(page == -1) {
 					pageNum = Math.ceil(replyCnt/10.0);
@@ -119,27 +74,61 @@
 				}
 				
 				var str="";
-				console.log("list :: " + list);
 				
 				if(list == null || list.length == 0) {
 					replyUL.html("");	
 					return;
 				}
 				
-				
-				for(var i =0, len = list.length || 0; i <len; i++) {
+				for(var i= 0, len= list.length || 0; i< len; i++) {
 					str +="<li class='left clearfix' data-rno='" + list[i].rno + "'>";
 					str +="    <div><div class='header'><strong class='primary-font'>" + list[i].replyer+"</strong>";
 					str +="        <small class='pull-right text-muted'>" + replyService.displayTime(list[i].replyDate) + "</small></div>";
-					str +="        <p>" + list[i].reply + "</p></div><,li>";
+					str +="        <p>" + list[i].reply + "</p></div></li>";
 				}
 				
-				replyUL.html("str");
+				replyUL.html(str);
+				showReplyPage(replyCnt);
 			}); //end getList
 		} //end showList
 		
+		function showReplyPage(replyCnt) {
+			var endNum = Math.ceil(pageNum / 10.0) * 10;
+			var startNum = endNum - 9;
+			
+			var prev= startNum != 1;
+			var next= false;
+			
+			if(endNum * 10 >= replyCnt) {
+				endNum = Math.ceil(replyCnt/10.0);
+			}
+			
+			if(endNum * 10 < replyCnt) {
+				next = true;
+			}
+			
+			var str = "<ul class='pagination pull-right'>";
+			
+			if(prev) {
+				str+= "<li class='page-item'><a class='page-link' href='"+(startNum -1)+"'>Previous</a></li>"
+			}
+			
+			for(var i= startNum; i<= endNum; i++) {
+				var active = pageNum == i ? "active":"";
+				str+= "<li class='page-item "+active+" '><a class='page-link' href='"+i+"'>"+i+"</a></li>";
+			}
+			
+			if(next) {
+				str+= "li class='page-item'><a class='page-link' href='"+(endNum + 1)+"'>Next</a></li>";
+			}
+			
+			str+= "</ul></div>";
+			
+			replyPageFooter.html(str);
+		}
 		
-		var modal = ${".modal"};
+		
+		var modal = $(".modal");
 		var modalInputReply = modal.find("input[name='reply']");
 		var modalInputReplyer = modal.find("input[name='replyer']");
 		var modalInputReplyDate = modal.find("input[name='replyDate']");
@@ -158,7 +147,6 @@
 			$(".modal").modal("show");
 		});
 		
-		
 		modalRegisterBtn.on("click", function(e) {
 			var reply = {
 					reply : modalInputReply.val(),
@@ -169,7 +157,7 @@
 				alert(result);
 				
 				modal.find("input").val("");
-				odal.modal("hide");
+				modal.modal("hide");
 				
 				showList(-1);
 			});
@@ -196,22 +184,28 @@
 			replyService.update(reply, function(result){
 				alert(result);
 				modal.modal("hide");
-				showList(1);
+				showList(pageNum);
 			});
 		});
 		
 		modalRemoveBtn.on("click", function(e) {
 			var rno = modal.data("rno");
 			
-			replyService.remove(rno, function(result) {
+			replyService.removeReply(rno, function(result) {
 				alert(result);
 				modal.modal("hide");
-				showList(1);
+				showList(pageNum);
 			});
-			
 		});
 		
-		 
+		replyPageFooter.on("click", "li a", function(e) {
+			e.preventDefault();
+			
+			var targetPageNum = $(this).attr("href");
+			pageNum = targetPageNum;
+			
+			showList(pageNum);
+		});
 	});
 </script>
 
@@ -283,20 +277,7 @@
 			 
 			<!-- /.panel=heading -->
 			<div class="panel-body">
-				
 				<ul class="chat">
-					<!-- start reply -->
-					<li class="left clearfix" data-rno='12'>
-						<div>
-							<div class="header">
-								<strong class="primary-font">user00</strong>
-								<small class="pull-right text-muted">2018-01-01 13:13</small>
-							</div>
-							<p>Good job!</p>
-						</div>
-					</li>
-					<!-- end reply -->
-				</ul>
 				<!-- ./end ul -->
 			</div>
 			<!-- /.panel .chat-panel -->

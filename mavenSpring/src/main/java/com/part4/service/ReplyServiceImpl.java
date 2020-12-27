@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.part3.domain.Criteria;
+import com.part3.mapper.BoardMapper;
 import com.part4.domain.ReplyPageDTO;
 import com.part4.domain.ReplyVO;
 import com.part4.mapper.ReplyMapper;
@@ -20,9 +22,13 @@ public class ReplyServiceImpl  implements ReplyService{
 	@Setter(onMethod_ = @Autowired)
 	private ReplyMapper mapper;
 	
+	@Setter(onMethod_ = @Autowired)
+	private BoardMapper boardMapper;
+	
+	@Transactional
 	@Override
 	public int register(ReplyVO vo) {
-		log.info("register :: {}", vo);
+		boardMapper.updateReplyCnt(vo.getBno(), 1);
 		
 		return mapper.insert(vo);
 	}
@@ -36,15 +42,17 @@ public class ReplyServiceImpl  implements ReplyService{
 	
 	@Override
 	public int modify(ReplyVO vo) {
-		log.info("modify :: {}", vo);
+		int tInt= mapper.update(vo);
 		
-		return mapper.update(vo);
+		return tInt;
 	}
 	
-	
+	@Transactional
 	@Override
 	public int remove(Long rno) {
-		log.info("remove :: {}", rno);
+		ReplyVO vo = mapper.read(rno);
+		
+		boardMapper.updateReplyCnt(vo.getBno(), -1);
 		
 		return mapper.delete(rno);
 	}

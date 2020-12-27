@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.part3.domain.Criteria;
@@ -60,22 +61,19 @@ public class ReplyController {
 	
 	@DeleteMapping(value =  "/{rno}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<String> remove(@PathVariable("rno") Long rno) {
-		log.info("remove :: {}", rno);
+		int tInt = service.remove(rno);
 		
-		return service.remove(rno) == 1 ?
+		return tInt == 1 ?
 				new ResponseEntity<>("success", HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+	@ResponseBody
 	@RequestMapping(method = {RequestMethod.PUT, RequestMethod.PATCH}
 					, value = "/{rno}"
 					, consumes = "application/json"
 					, produces = {MediaType.TEXT_PLAIN_VALUE})
 	public ResponseEntity<String> modify(@RequestBody ReplyVO vo, @PathVariable("rno") Long rno) {
 		vo.setRno(rno);
-		
-		log.info("rno :: {}", rno);
-		log.info("modify :: {}", vo);
 		
 		return service.modify(vo) == 1 ? 
 				new ResponseEntity<>("success", HttpStatus.OK)
