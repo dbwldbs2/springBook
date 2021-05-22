@@ -22,7 +22,7 @@ var replyService = (function() {
 		var bno = param.bno;
 		var page = param.page || 1;
 		
-		$.getJSON("/replies/pages/" + bno + "/" + page + ".json", function(data) {
+		$.get("/replies/pages/" + bno + "/" + page + ".json", function(data) {
 			if(callback) {
 				callback(data.replyCnt, data.list);
 			}
@@ -49,10 +49,10 @@ var replyService = (function() {
 		$.ajax({
 			type : 'delete',
 			url : '/replies/' + rno,
+			dataType: 'text',
 			success : function(result, status, xhr) {
-				console.log(callback);
 				if(callback) {
-					callback(deleteResult);
+					callback(result);
 				}
 			},
 			error : function(xhr, status, er) {

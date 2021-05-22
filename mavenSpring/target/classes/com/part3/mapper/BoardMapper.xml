@@ -98,10 +98,8 @@
 			 			, updatedate
 			 			, replycnt
 			 	FROM 	TBL_BOARD
-			 	WHERE 	
-			 	
+			 	WHERE
 			 	<include refid="criteria"/>
-			 	
 			 	rownum <![CDATA[<=]]> #{pageNum} * #{amount}
 		)
 		WHERE rn <![CDATA[>]]> (#{pageNum} -1) * #{amount}
@@ -112,9 +110,7 @@
 		SELECT 	COUNT(*)
 		FROM 	TBL_BOARD
 		WHERE
-		
-		<include refid="criteria"></include> 	
-		
+		<include refid="criteria"></include>
 		bno <![CDATA[>]]> 0
 	</select>
 	

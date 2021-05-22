@@ -18,32 +18,38 @@
 <div class="row">
 	<div class = "col-lg-12">
 		<div class="panel panel-default">
-			<div class="panel-heading">Board Modify Page</div>
+			<div class="panel-heading" style="margin-bottom: 15px">Board Modify Page</div>
 			<!-- /.panel-heading -->
 			<div class="panel-body">
 				<form role="form" action="/board/modify" method="post">
 					<div class="form-group">
-						<label>Bno</label> <input class="form-control" name="bno" value='<c:out value="${board.bno}" />' readonly="readonly">
+						<label style="margin-left: 7px">Bno</label> 
+						<input class="form-control" name="bno" value='<c:out value="${board.bno}" />' readonly="readonly" style="width: 40%; margin-left: 7px">
 					</div>
 					
 					<div class="form-group">
-						<label>Title</label> <input class="form-control" name="title" value='<c:out value="${board.title}" />'>
+						<label style="margin-left: 7px">Title</label> 
+						<input class="form-control" name="title" value='<c:out value="${board.title}" />' style="width: 40%; margin-left: 7px">
 					</div>
 					
 					<div class="form-group">
-						<label>Text area</label> <textarea class="form-control" rows="3" name="content"><c:out value="${board.content}" /></textarea>
+						<label style="margin-left: 7px">Text area</label> 
+						<textarea class="form-control" rows="3" name="content" style="width: 40%; margin-left: 7px"><c:out value="${board.content}" /></textarea>
 					</div>
 					
 					<div class="form-group">
-						<label>Writer</label> <input class="form-control" name="writer" value='<c:out value="${board.writer}" />'>
+						<label style="margin-left: 7px">Writer</label> 
+						<input class="form-control" name="writer" value='<c:out value="${board.writer}" />' style="width: 40%; margin-left: 7px">
 					</div>
 					
 					<div class="form-group">
-						<label>RegDate</label> <input class="form-control" name="regDate" value='<fmt:formatDate pattern ="yyyy/MM/dd" value ="${board.regdate}" />' readonly="readonly">
+						<label style="margin-left: 7px">RegDate</label> 
+						<input class="form-control" name="regDate" value='<fmt:formatDate pattern ="yyyy/MM/dd" value ="${board.regdate}" />' readonly="readonly" style="width: 40%; margin-left: 7px">
 					</div>
 					
 					<div class="form-group">
-						<label>Update Date</label> <input class="form-control" name="regDate" value='<fmt:formatDate pattern ="yyyy/MM/dd" value ="${board.updateDate}" />' readonly="readonly">
+						<label style="margin-left: 7px">Update Date</label> 
+						<input class="form-control" name="regDate" value='<fmt:formatDate pattern ="yyyy/MM/dd" value ="${board.updateDate}" />' readonly="readonly" style="width: 40%; margin-left: 7px">
 					</div>
 					
 					<input type="hidden" name="pageNum" value="<c:out value='${cri.pageNum}' />" >
@@ -51,9 +57,10 @@
 					<input type="hidden" name="type" value="<c:out value='${cri.type}' />" >
 					<input type="hidden" name="keyword" value="<c:out value='${cri.keyword}' />" >
 					
-					<button type ="submit" date-oper="modify" class="btn btn-default">Modify</button>
-					<button type ="submit" date-oper="remove" class="btn btn-danger">Remove</button>
-					<button type ="submit" date-oper="list" class="btn btn-info">List</button>
+					<button type ="submit" data-oper="list" class="btn btn-info" style="margin-left: 14px; margin-right: 20px">List</button>
+					<button type ="submit" data-oper="modify" class="btn btn-default" style="color: white; background-color: cornflowerblue; border-color: cornflowerblue">Modify</button>
+					<button type ="submit" data-oper="remove" class="btn btn-danger">Remove</button>
+					
 				</form>
 			</div>
 			<!--  end panel-body -->
@@ -64,20 +71,19 @@
 </div>
 <!-- end row -->
 
-<script src="/webjars/jquery/3.1.1-1/jquery.min.js"></script>
-<script src="/webjars/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-<script type="text/javascript">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<script src="//code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script>
 	$(document).ready(function() {
 		var formObj = $("form");
 		
 		$("button").on("click", function(e) {
 			e.preventDefault();
-			
 			var operation = $(this).data("oper");
 			
-			console.log("jquery :: " + operation);
-			
 			if(operation === 'remove') {
+				alert("remove");
 				formObj.attr("action", "/board/remove");
 			} else if(operation === 'list') {
 				formObj.attr("action", "/board/list").attr("method", "get");

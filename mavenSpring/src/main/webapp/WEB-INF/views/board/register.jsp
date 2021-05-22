@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 
 
-<link rel="stylesheet" href="/webjars/bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 
 <div class="row">
 	<div class="col-lg-12">
@@ -18,24 +18,27 @@
 <div class="row">
 	<div class = "col-lg-12">
 		<div class="panel panel-default">
-			<div class="panel-heading">Board Register</div>
+			<div class="panel-heading" style="margin-bottom: 15px">Board Register page</div>
 			<!-- /.panel-heading -->
 			<div class="panel-body">
 				<form role="form" action="/board/register" method="post">
 					<div class="form-group">
-						<label>Title</label> <input class="form-control" name="title">
+						<label style="margin-left:7px">Title</label> 
+						<input class="form-control" name="title" style="width: 40%; margin-left:7px">
 					</div>
 					
 					<div class="form-group">
-						<label>Text area</label> <textarea class="form-control" rows="5" name="content"></textarea>
+						<label style="margin-left:7px">Text area</label> 
+						<textarea class="form-control" rows="5" name="content" style="width: 40%; margin-left:7px"></textarea>
 					</div>
 					
 					<div class="form-group">
-						<label>Writer</label> <textarea class="form-control" rows="1" name="writer"></textarea>
+						<label style="margin-left:7px">Writer</label> 
+						<textarea class="form-control" rows="1" name="writer" style="width: 40%; margin-left:7px"></textarea>
 					</div>
 					
-					<button type="submit" class="btn btn-default">Submit Button</button>
-					<button type="reset" class="btn btn-default">Reset Button</button>
+					<button type="submit" class="btn btn-default" style="color: blue">Submit Button</button>
+					<button type="reset" class="btn btn-default" style="color: red">Reset Button</button>
 				</form>
 			</div>
 			<!--  end panel-body -->

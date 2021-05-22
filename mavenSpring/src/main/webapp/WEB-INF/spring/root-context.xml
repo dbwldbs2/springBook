@@ -14,12 +14,9 @@
 	
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<property name="driverClassName" value="oracle.jdbc.OracleDriver"></property>
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@springbook.c6jf0rusmckm.ap-northeast-2.rds.amazonaws.com:1521:DATABASE"></property>
-		<property name="username" value="springbook"></property>
-		<property name="password" value="springbook"></property>
-<!-- 		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl"></property> -->
-<!-- 		<property name="username" value="book_ex"></property> -->
-<!-- 		<property name="password" value="book_ex"></property> -->
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl"></property>
+		<property name="username" value="book_ex"></property>
+		<property name="password" value="book_ex"></property>
 	</bean>
 	
 	<!-- Hikari를 이용한  Database ConnectionPool 설정-->
@@ -31,6 +28,10 @@
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 	
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    	<property name="dataSource" ref="dataSource"/>
+	</bean>
+
 	<tx:annotation-driven />
 		
 	<context:component-scan base-package="sample"/>

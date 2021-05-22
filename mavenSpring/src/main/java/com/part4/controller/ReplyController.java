@@ -63,9 +63,8 @@ public class ReplyController {
 	public ResponseEntity<String> remove(@PathVariable("rno") Long rno) {
 		int tInt = service.remove(rno);
 		
-		return tInt == 1 ?
-				new ResponseEntity<>("success", HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		return tInt == 1 ? 
+				new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	@ResponseBody
 	@RequestMapping(method = {RequestMethod.PUT, RequestMethod.PATCH}

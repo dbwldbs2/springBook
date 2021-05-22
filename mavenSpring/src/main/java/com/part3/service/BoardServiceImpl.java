@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.part3.domain.BoardVO;
 import com.part3.domain.Criteria;
 import com.part3.mapper.BoardMapper;
+import com.part4.domain.ReplyVO;
+import com.part4.mapper.ReplyMapper;
 
 import lombok.AllArgsConstructor;
 import lombok.Setter;
@@ -19,6 +21,9 @@ import lombok.extern.slf4j.Slf4j;
 public class BoardServiceImpl implements BoardService{
 	@Setter(onMethod_ = @Autowired)
 	private BoardMapper mapper;
+	
+	@Setter(onMethod_ = @Autowired)
+	private ReplyMapper replymapper;
 
 	@Override
 	public void register(BoardVO board) {
@@ -49,6 +54,14 @@ public class BoardServiceImpl implements BoardService{
 		// TODO Auto-generated method stub
 		
 		log.info("remove..." + bno);
+		
+		List<ReplyVO> rnoList = replymapper.getRnoList(bno);
+		
+		for(int i = 0; i < rnoList.size(); i++) {
+			replymapper.delete(rnoList.get(i).getRno());
+		}
+		
+		int isDeleted = mapper.delete(bno);
 		return mapper.delete(bno) == 1;
 	}
 

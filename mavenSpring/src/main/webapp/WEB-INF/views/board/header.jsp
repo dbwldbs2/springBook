@@ -10,8 +10,8 @@
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 	<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 	
-	<link rel="stylesheet" href="/webjars/bootstrap/4.4.1/css/bootstrap.min.css">  
-	<script src="/webjars/jquery/3.1.1-1/jquery.min.js"></script>
-	<script src="/webjars/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+	<script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -6,9 +6,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<link rel="stylesheet" href="/webjars/bootstrap/4.4.1/css/bootstrap.min.css">  
-<script src="/webjars/jquery/3.1.1-1/jquery.min.js"></script>
-<script src="/webjars/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -23,7 +26,7 @@
 			}
 			
 			if(parseInt(result) > 0) {
-				$(".modal-body").html("게시글 " + parseInt(result) + " 번이 등록되었습니다.");
+				$(".modal-body").html(parseInt(result) + " 번 게시글이 등록되었습니다.");
 			}
 
 			$("#myModal").modal("show");
@@ -81,7 +84,7 @@
 	<div class = "col-lg-12">
 		<div class="panel panel-default">
 			<div class="panel-heading">Board List Page
-				<button id='regBtn' type="button" class="btn btn-xs pull-right">Register New Board</button>
+				<button id='regBtn' type="button" class="btn btn-xs pull-right" style="color: blue;">Register New Board</button>
 			</div>
 			<!-- /.panel-heading -->
 			<div class="panel-body">
@@ -156,7 +159,7 @@
 						</c:if>
 						
 						<c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
-							<li class="paginate_button ${pageMaker.cri.pageNum == num ? 'active':''}">
+							<li class="paginate_button ${pageMaker.cri.pageNum == num ? 'active':''}" style="padding-right: 3px">
 								<a href='${num}'>${num}</a>
 							</li>
 						</c:forEach>
@@ -182,13 +185,12 @@
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 								<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 							</div>
 							<div class="modal-body">처리가 완료되었습니다.</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary">Save changes</button>
 							</div>
 						</div>
 						<!-- /.modal-content -->

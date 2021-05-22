@@ -55,7 +55,6 @@ public class BoardController {
 	
 	@GetMapping("/register")
 	public void register() {
-		
 	}
 	
 	@GetMapping({"/get", "/modify"})

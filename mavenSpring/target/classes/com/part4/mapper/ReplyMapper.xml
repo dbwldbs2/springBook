@@ -70,4 +70,10 @@
 	]]>
 </select>
 
+<select id="getRnoList" resultType="com.part4.domain.ReplyVO">
+	SELECT 	rno
+	FROM 	TBL_REPLY
+	WHERE 	BNO = #{bno}
+</select>
+
 </mapper>

@@ -22,4 +22,6 @@ public interface ReplyMapper {
 	);
 	
 	public int getCountByBno(Long bno);
+	
+	public List<ReplyVO> getRnoList(Long bno);
 }

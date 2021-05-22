@@ -6,9 +6,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<link rel="stylesheet" href="/webjars/bootstrap/4.4.1/css/bootstrap.min.css">
-<script src="/webjars/jquery/3.1.1-1/jquery.min.js"></script>
-<script src="/webjars/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 
 <!-- Modal -->
 <div class="modal fade" id ="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -136,7 +136,7 @@
 		var modalModBtn = $("#modalModBtn");
 		var modalRemoveBtn = $("#modalRemoveBtn");
 		var modalRegisterBtn = $("#modalRegisterBtn");
-		
+		var modalCloseBtn = $("#modalCloseBtn");
 		$("#addReplyBtn").on("click", function(e) {
 			modal.find("input").val("");
 			modalInputReplyDate.closest("div").hide();
@@ -144,7 +144,7 @@
 			
 			modalRegisterBtn.show();
 			
-			$(".modal").modal("show");
+			modal.modal("show");
 		});
 		
 		modalRegisterBtn.on("click", function(e) {
@@ -153,14 +153,18 @@
 					replyer : modalInputReplyer.val(),
 					bno : bnoValue
 			};
+			
 			replyService.add(reply, function(result) {
-				alert(result);
+				alert("댓글이 등록되었습니다.");
 				
 				modal.find("input").val("");
 				modal.modal("hide");
 				
 				showList(-1);
 			});
+		});
+		modalCloseBtn.on("click", function(e) {
+			modal.modal("hide");
 		});
 		
 		$(".chat").on("click", "li", function(e) {
@@ -189,10 +193,12 @@
 		});
 		
 		modalRemoveBtn.on("click", function(e) {
+			if(!confirm("댓글을 삭제하시겠습니까?")) {return;} 
+			
 			var rno = modal.data("rno");
 			
 			replyService.removeReply(rno, function(result) {
-				alert(result);
+				alert("삭제되었습니다.");
 				modal.modal("hide");
 				showList(pageNum);
 			});
@@ -221,25 +227,29 @@
 <div class="row">
 	<div class = "col-lg-12">
 		<div class="panel panel-default">
-			<div class="panel-heading">Board Read Page</div>
+			<div class="panel-heading" style="margin-bottom: 15px">Board Read Page</div>
 			<!-- /.panel-heading -->
 			<div class="panel-body">
 				<div class="form-group">
-					<label>Bno</label> <input class="form-control" name="bno" value='<c:out value="${board.bno}" />' readonly="readonly">
+					<label style="margin-left:7px">Bno</label> 
+					<input class="form-control" name="bno" value='<c:out value="${board.bno}" />' readonly="readonly" style="width: 40%; margin-left:7px">
 				</div>
 				<div class="form-group">
-					<label>Title</label> <input class="form-control" name="title" value='<c:out value="${board.title}" />' readonly="readonly">
+					<label style="margin-left:7px">Title</label> 
+					<input class="form-control" name="title" value='<c:out value="${board.title}" />' readonly="readonly" style="width: 40%; margin-left:7px">
 				</div>
 				<div class="form-group">
-					<label>Text area</label> <textarea class="form-control" rows="3" name="content" readonly="readonly"><c:out value="${board.content}" /></textarea>
+					<label style="margin-left:7px">Text area</label> 
+					<textarea class="form-control" rows="3" name="content" readonly="readonly" style="width: 40%; margin-left:7px"><c:out value="${board.content}" /></textarea>
 				</div>
 				<div class="form-group">
-					<label>Writer</label> <input class="form-control" name="writer" value='<c:out value="${board.writer}" />' readonly="readonly">
+					<label style="margin-left:7px">Writer</label> 
+					<input class="form-control" name="writer" value='<c:out value="${board.writer}" />' readonly="readonly" style="width: 40%; margin-left:7px">
 				</div>
 				<button data-oper="modify" class="btn btn-info"
-					onclick="location.href='/board/modify?bno=<c:out value="${board.bno}"/>'">Modify</button>
+					onclick="location.href='/board/modify?bno=<c:out value="${board.bno}" />'" style="margin-left: 20px">Modify</button>
 				<button data-oper="list" class="btn btn-info"
-					onclick="location.href='/board/list'">List</button>
+					onclick="location.href='/board/list'" style="margin-left: 5px">List</button>
 				
 				<form id="operForm" action="/board/modify" method="get">
 					<input type="hidden" id="bno" name="bno" value="<c:out value='${board.bno}' />" >
@@ -270,19 +280,19 @@
 			</div>
 			 -->
 			 
-			 <div class="panel-heading">
+			 <div class="panel-heading" style="margin-top: 45px; margin-left: 7px; margin-bottom: 20px">
 			 	<i class="fa fa-comments fa-fw"></i>Reply 
 			 	<button id='addReplyBtn' class='btn btn-primary btn-xs pull-right'>New Reply</button>
 			 </div>
 			 
 			<!-- /.panel=heading -->
 			<div class="panel-body">
-				<ul class="chat">
+				<ul class="chat" style="margin-left: 1.5rem">
 				<!-- ./end ul -->
 			</div>
 			<!-- /.panel .chat-panel -->
 			
-			<div class="panel-footer">
+			<div class="panel-footer" style="margin-left: 1.5rem">
 			
 			</div>
 		</div>
