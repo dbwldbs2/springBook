@@ -44,6 +44,7 @@
 	<mybatis-spring:scan base-package="com.part3.mapper"/>
 	<mybatis-spring:scan base-package="com.part4.mapper"/>
 	<mybatis-spring:scan base-package="com.part5.mapper"/>
+	<mybatis-spring:scan base-package="com.part7.mapper"/>
 	
 	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
 </beans>

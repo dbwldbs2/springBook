@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html>
 
 
@@ -22,6 +24,7 @@
 			<!-- /.panel-heading -->
 			<div class="panel-body">
 				<form role="form" action="/board/modify" method="post">
+					<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" />
 					<div class="form-group">
 						<label style="margin-left: 7px">Bno</label> 
 						<input class="form-control" name="bno" value='<c:out value="${board.bno}" />' readonly="readonly" style="width: 40%; margin-left: 7px">
@@ -58,9 +61,14 @@
 					<input type="hidden" name="keyword" value="<c:out value='${cri.keyword}' />" >
 					
 					<button type ="submit" data-oper="list" class="btn btn-info" style="margin-left: 14px; margin-right: 20px">List</button>
-					<button type ="submit" data-oper="modify" class="btn btn-default" style="color: white; background-color: cornflowerblue; border-color: cornflowerblue">Modify</button>
-					<button type ="submit" data-oper="remove" class="btn btn-danger">Remove</button>
 					
+					<sec:authentication property="principal" var="pinfo"/>
+					<sec:authorize access="isAuthenticated()">
+						<c:if test="${pinfo.username eq board.writer }">
+							<button type ="submit" data-oper="modify" class="btn btn-default" style="color: white; background-color: cornflowerblue; border-color: cornflowerblue">Modify</button>
+							<button type ="submit" data-oper="remove" class="btn btn-danger">Remove</button>
+						</c:if>
+					</sec:authorize>
 				</form>
 			</div>
 			<!--  end panel-body -->

@@ -26,4 +26,5 @@
 	<context:component-scan base-package="com.basic" />
 	<context:component-scan base-package="com.part3.controller" />
 	<context:component-scan base-package="com.part4.controller" />
+	<context:component-scan base-package="com.part7.controller" />
 </beans:beans>

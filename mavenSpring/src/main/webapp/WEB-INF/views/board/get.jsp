@@ -1,10 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
-<!DOCTYPE html>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<!DOCTYPE html>
 
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
@@ -25,7 +25,7 @@
 				</div>
 				<div class="form-group">
 					<label>Replyer</label>
-					<input class="form-control" name='replyer' value='replyer'>
+					<input class="form-control" name='replyer' value='replyer' readonly = 'readonly'>
 				</div>
 <!-- 				<div class="form-group"> -->
 <!-- 					<label>Date</label> -->
@@ -137,14 +137,28 @@
 		var modalRemoveBtn = $("#modalRemoveBtn");
 		var modalRegisterBtn = $("#modalRegisterBtn");
 		var modalCloseBtn = $("#modalCloseBtn");
+		
+		var replyer = null;
+		<sec:authorize access="isAuthenticated()">
+			replyer = "<sec:authentication property='principal.username' />";
+		</sec:authorize>
+		
+		var csrfHeaderName = "${_csrf.headerName}";
+		var csrfTokenValue = "${_csrf.token}";
+		
 		$("#addReplyBtn").on("click", function(e) {
 			modal.find("input").val("");
+			modal.find("input[name='replyer']").val(replyer);
 			modalInputReplyDate.closest("div").hide();
 			modal.find("button[id !='modalCloseBtn']").hide();
 			
 			modalRegisterBtn.show();
 			
 			modal.modal("show");
+		});
+		
+		$(document).ajaxSend(function(e, xhr, options) {
+			xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
 		});
 		
 		modalRegisterBtn.on("click", function(e) {
@@ -184,7 +198,25 @@
 		});
 		
 		modalModBtn.on("click", function(e) {
-			var reply = {rno:modal.data("rno"), reply: modalInputReply.val()};
+			var originalReplyer = modalInputReplyer.val();
+			
+			var reply = {rno:modal.data("rno"), 
+						 reply: modalInputReply.val(), 
+						 replyer: originalReplyer
+						};
+			
+			if(!replyer) {
+				alert("로그인 후 수정이 가능합니다.");
+				modal.modal("hide");
+				return;
+			}
+			
+			if(replyer != originalReplyer) {
+				alert("자신이 작성한 댓글만 수정이 가능합니다.");
+				modal.modal("hide");
+				return;
+			}
+			
 			replyService.update(reply, function(result){
 				alert(result);
 				modal.modal("hide");
@@ -197,7 +229,25 @@
 			
 			var rno = modal.data("rno");
 			
-			replyService.removeReply(rno, function(result) {
+			console.log("rno :: " + rno);
+			console.log("replyer :: " + replyer);
+			
+			if(!replyer) {
+				alter("로그인 후 삭제가 가능합니다.");
+				modal.modal("hide");
+				return;
+			}
+			
+			var originalReplyer = modalInputReplyer.val();
+			console.log("originalReplyer :: " + originalReplyer);
+			
+			if(replyer != originalReplyer) {
+				alert("자신이 작성한 댓글만 삭제가 가능합니다.");
+				modal.modal("hide");
+				return;
+			}
+			
+			replyService.removeReply(rno, originalReplyer, function(result) {
 				alert("삭제되었습니다.");
 				modal.modal("hide");
 				showList(pageNum);
@@ -246,8 +296,15 @@
 					<label style="margin-left:7px">Writer</label> 
 					<input class="form-control" name="writer" value='<c:out value="${board.writer}" />' readonly="readonly" style="width: 40%; margin-left:7px">
 				</div>
-				<button data-oper="modify" class="btn btn-info"
-					onclick="location.href='/board/modify?bno=<c:out value="${board.bno}" />'" style="margin-left: 20px">Modify</button>
+				
+				<sec:authentication property="principal" var="pinfo"/>
+				<sec:authorize access="isAuthenticated()">
+					<c:if test="${pinfo.username eq board.writer }">
+						<button data-oper="modify" class="btn btn-info"
+							onclick="location.href='/board/modify?bno=<c:out value="${board.bno}" />'" style="margin-left: 20px">Modify</button>
+					</c:if>
+				</sec:authorize>
+				
 				<button data-oper="list" class="btn btn-info"
 					onclick="location.href='/board/list'" style="margin-left: 5px">List</button>
 				
@@ -281,10 +338,12 @@
 			 -->
 			 
 			 <div class="panel-heading" style="margin-top: 45px; margin-left: 7px; margin-bottom: 20px">
-			 	<i class="fa fa-comments fa-fw"></i>Reply 
-			 	<button id='addReplyBtn' class='btn btn-primary btn-xs pull-right'>New Reply</button>
+			 	<i class="fa fa-comments fa-fw"></i>Reply
+			 	<sec:authorize access="isAuthenticated()"> 
+			 		<button id='addReplyBtn' class='btn btn-primary btn-xs pull-right'>New Reply</button>
+			 	</sec:authorize>
 			 </div>
-			 
+			  
 			<!-- /.panel=heading -->
 			<div class="panel-body">
 				<ul class="chat" style="margin-left: 1.5rem">

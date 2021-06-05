@@ -45,11 +45,12 @@ var replyService = (function() {
 		});
 	}
 	
-	function removeReply(rno, callback, error) {
+	function removeReply(rno, replyer, callback, error) {
 		$.ajax({
 			type : 'delete',
 			url : '/replies/' + rno,
-			dataType: 'text',
+			data : JSON.stringify({rno: rno, replyer: replyer}),
+			contentType: "application/json; cahrset=utf-8",
 			success : function(result, status, xhr) {
 				if(callback) {
 					callback(result);
